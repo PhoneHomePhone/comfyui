@@ -2,7 +2,7 @@
 
 # This file will be sourced in init.sh
 
-# https://github.com/PhoneHomePhone/comfyui/new/main
+# https://github.com/PhoneHomePhone/comfyui/blob/main/config/provisioning/default.sh
 
 # Packages are installed after nodes so we can fix them...
 
