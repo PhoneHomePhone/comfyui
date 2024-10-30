@@ -69,6 +69,10 @@ NODES=(
     "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
     #"https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git"
     "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git"
+    "https://github.com/PowerHouseMan/ComfyUI-AdvancedLivePortrait.git"
+    #Visual Seg
+    "https://github.com/kijai/ComfyUI-segment-anything-2.git"
+    "https://github.com/kijai/ComfyUI-Florence2.git"
 )
 
 WORKFLOWS=(
@@ -84,11 +88,13 @@ CHECKPOINT_MODELS=(
 
 UNET_MODELS=(
     #"https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/flux1-dev.sft"
+    #"https://huggingface.co/mikeyandfriends/PixelWave_FLUX.1-dev_03/resolve/main/pixelwave_flux1_dev_fp8_03.safetensors"
 )
 
 CLIP_MODELS=(
     "https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/clip_l.safetensors"
     "https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/t5xxl_fp16.safetensors"
+    "https://huggingface.co/zer0int/CLIP-GmP-ViT-L-14/resolve/main/ViT-L-14-TEXT-detail-improved-hiT-GmP-HF.safetensors"
 )
 
 LORA_MODELS=(
