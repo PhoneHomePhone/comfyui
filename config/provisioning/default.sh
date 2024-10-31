@@ -32,47 +32,58 @@ NODES=(
     "https://github.com/melMass/comfy_mtb"
     "https://github.com/giriss/comfy-image-saver.git"
     "https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
     "https://github.com/city96/ComfyUI_ExtraModels.git"
     #"https://github.com/shiimizu/ComfyUI_smZNodes.git"
     "https://github.com/comfyanonymous/ComfyUI_TensorRT.git"
-    "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git"
-    "https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git"
     "https://github.com/Extraltodeus/ComfyUI-AutomaticCFG.git"
     #"https://github.com/Extraltodeus/Skimmed_CFG.git"
     "https://github.com/chibiace/ComfyUI-Chibi-Nodes.git"
     "https://github.com/crystian/ComfyUI-Crystools"
     "https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
     "https://github.com/yolain/ComfyUI-Easy-Use.git"
-    "https://github.com/ltdrdata/ComfyUI-Impact-Pack"
     "https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git"
     "https://github.com/kijai/ComfyUI-KJNodes"
     "https://github.com/ltdrdata/ComfyUI-Manager"
-    #"https://github.com/whmc76/ComfyUI-Openpose-Editor-Plus.git"
     "https://github.com/jamesWalker55/comfyui-various.git"
-    #"https://github.com/klinter007/klinter_nodes.git"
+    "https://github.com/klinter007/klinter_nodes.git"
     "https://github.com/rgthree/rgthree-comfy"
     "https://github.com/WASasquatch/was-node-suite-comfyui"
+    "https://github.com/jags111/efficiency-nodes-comfyui.git"
     #ID Tools
-    #"https://github.com/balazik/ComfyUI-PuLID-Flux.git"
+    "https://github.com/sipie800/ComfyUI-PuLID-Flux-Enhanced.git"
     "https://github.com/cubiq/ComfyUI_InstantID.git"
     "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git"
     "https://github.com/cubiq/ComfyUI_FaceAnalysis.git"
     "https://github.com/cubiq/PuLID_ComfyUI.git"
     "https://github.com/Gourieff/comfyui-reactor-node"
     #"https://github.com/mav-rik/facerestore_cf.git"
-    #Tagger / LM Tools
+    #Tagger / LLM Tools / Visual Seg
     "https://github.com/kijai/ComfyUI-Florence2.git"
+    "https://github.com/kijai/ComfyUI-segment-anything-2.git"
     "https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git"
     "https://github.com/sugarkwork/comfyui_tag_fillter.git"
+    "https://github.com/time-river/ComfyUI-CLIPSeg.git"
+    "https://github.com/wujm424606/ComfyUi-Ollama-YN.git"
     #Video Tools
     "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
     #"https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git"
     "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git"
     "https://github.com/PowerHouseMan/ComfyUI-AdvancedLivePortrait.git"
-    #Visual Seg
-    "https://github.com/kijai/ComfyUI-segment-anything-2.git"
-    "https://github.com/kijai/ComfyUI-Florence2.git"
+    "https://github.com/kijai/ComfyUI-LivePortraitKJ.git"
+    #Control Net
+    "https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git"
+    "https://github.com/Fannovel16/comfyui_controlnet_aux"
+    #"https://github.com/whmc76/ComfyUI-Openpose-Editor-Plus.git"
+    #Graphics Tools
+    "https://github.com/chflame163/ComfyUI_LayerStyle.git"
+    #CSV / Style / List
+    "https://github.com/KoreTeknology/ComfyUI-Universal-Styler.git"
+    "https://github.com/M1kep/Comfy_KepListStuff.git"
+    "https://github.com/SozeInc/ComfyUI_Soze.git"
+    #Upscale
+    "https://github.com/BlenderNeko/ComfyUI_TiledKSampler.git"
+    "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git"
+
 )
 
 WORKFLOWS=(
