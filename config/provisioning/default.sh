@@ -102,6 +102,18 @@ UNET_MODELS=(
     #"https://huggingface.co/mikeyandfriends/PixelWave_FLUX.1-dev_03/resolve/main/pixelwave_flux1_dev_fp8_03.safetensors"
 )
 
+DIFFUSION_MODELS=(
+	#"https://huggingface.co/city96/HunyuanVideo-gguf/resolve/main/hunyuan-video-t2v-720p-Q8_0.gguf"
+    #"https://huggingface.co/Kijai/SkyReels-V1-Hunyuan_comfy/resolve/main/skyreels-hunyuan-I2V-Q8_0.gguf"
+    #"https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-T2V-1_3B_bf16.safetensors"
+    #"https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-T2V-14B_fp8_e4m3fn.safetensors"
+    #"https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors"
+    #"https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-I2V-14B-720P_fp8_e4m3fn.safetensors"
+    #"https://huggingface.co/city96/Wan2.1-T2V-14B-gguf/resolve/main/wan2.1-t2v-14b-Q8_0.gguf"
+    #"https://huggingface.co/city96/Wan2.1-I2V-14B-480P-gguf/resolve/main/wan2.1-i2v-14b-480p-Q8_0.gguf"
+    #"https://huggingface.co/city96/Wan2.1-I2V-14B-720P-gguf/resolve/main/wan2.1-i2v-14b-720p-Q8_0.gguf"
+)
+
 CLIP_MODELS=(
     "https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/clip_l.safetensors"
     "https://huggingface.co/camenduru/FLUX.1-dev/resolve/main/t5xxl_fp16.safetensors"
@@ -110,10 +122,10 @@ CLIP_MODELS=(
 
 LORA_MODELS=(
     #Shakker-Labs
-    "https://huggingface.co/Shakker-Labs/FLUX.1-dev-LoRA-Logo-Design/resolve/main/FLUX-dev-lora-Logo-Design.safetensors"
-    "https://huggingface.co/Shakker-Labs/FLUX.1-dev-LoRA-AntiBlur/resolve/main/FLUX-dev-lora-AntiBlur.safetensors"
-    "https://huggingface.co/Shakker-Labs/FilmPortrait/resolve/main/filmfotos.safetensors"
-    "https://huggingface.co/Shakker-Labs/AWPortrait-FL/resolve/main/AWPortrait-FL-lora.safetensors"
+    #"https://huggingface.co/Shakker-Labs/FLUX.1-dev-LoRA-Logo-Design/resolve/main/FLUX-dev-lora-Logo-Design.safetensors"
+    #"https://huggingface.co/Shakker-Labs/FLUX.1-dev-LoRA-AntiBlur/resolve/main/FLUX-dev-lora-AntiBlur.safetensors"
+    #"https://huggingface.co/Shakker-Labs/FilmPortrait/resolve/main/filmfotos.safetensors"
+    #"https://huggingface.co/Shakker-Labs/AWPortrait-FL/resolve/main/AWPortrait-FL-lora.safetensors"
 )
 
 VAE_MODELS=(
@@ -208,31 +220,34 @@ function provisioning_start() {
     provisioning_get_nodes
     provisioning_get_pip_packages
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/ckpt" \
+        "${WORKSPACE}/ComfyUI/models/ckpt" \
         "${CHECKPOINT_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/unet" \
+        "${WORKSPACE}/ComfyUI/models/unet" \
         "${UNET_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/clip" \
+        "${WORKSPACE}/ComfyUI/models/diffusion_models" \
+        "${DIFFUSION_MODELS[@]}"
+    provisioning_get_models \
+        "${WORKSPACE}/ComfyUI/models/clip" \
         "${CLIP_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/lora" \
+        "${WORKSPACE}/ComfyUI/models/lora" \
         "${LORA_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/controlnet" \
+        "${WORKSPACE}/ComfyUI/models/controlnet" \
         "${CONTROLNET_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/vae" \
+        "${WORKSPACE}/ComfyUI/models/vae" \
         "${VAE_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
+        "${WORKSPACE}/ComfyUI/models/esrgan" \
         "${ESRGAN_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/ipadapter" \
+        "${WORKSPACE}/ComfyUI/models/ipadapter" \
         "${IPAdapter_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/clip_vision" \
+        "${WORKSPACE}/ComfyUI/models/clip_vision" \
         "${CLIPVISION_MODELS[@]}"	
     provisioning_get_workflows
     provisioning_print_end
