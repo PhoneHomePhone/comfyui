@@ -32,7 +32,7 @@ NODES=(
 	"https://github.com/giriss/comfy-image-saver"
 	"https://github.com/Fannovel16/comfyui_controlnet_aux"
 	#"https://github.com/WASasquatch/was-node-suite-comfyui"
- 	https://github.com/ltdrdata/was-node-suite-comfyui.git
+ 	"https://github.com/ltdrdata/was-node-suite-comfyui.git"
 	"https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
 	"https://github.com/melMass/comfy_mtb"
     "https://github.com/crystian/ComfyUI-Crystools"
