@@ -20,14 +20,13 @@ PIP_PACKAGES=(
 
 NODES=(
 	"https://github.com/ltdrdata/ComfyUI-Manager"
+    "https://github.com/crystian/ComfyUI-Crystools"
+
 	"https://github.com/cubiq/ComfyUI_essentials"
 	"https://github.com/MushroomFleet/DJZ-Nodes"
-	"https://github.com/Gourieff/comfyui-reactor-node"
 	"https://github.com/ltdrdata/ComfyUI-Impact-Pack"
 	"https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes"
 	"https://github.com/rgthree/rgthree-comfy"
-	"https://github.com/crystian/ComfyUI-Crystools"
-    	"https://github.com/city96/ComfyUI-GGUF"
 	"https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
 	"https://github.com/giriss/comfy-image-saver"
 	"https://github.com/Fannovel16/comfyui_controlnet_aux"
@@ -35,19 +34,27 @@ NODES=(
  	"https://github.com/ltdrdata/was-node-suite-comfyui.git"
 	"https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
 	"https://github.com/melMass/comfy_mtb"
-    "https://github.com/crystian/ComfyUI-Crystools"
     "https://github.com/rgthree/rgthree-comfy"
 	"https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes"
-	"https://github.com/sipherxyz/comfyui-art-venture"
+	"https://github.com/kijai/ComfyUI-KJNodes"
+ 
+ 	"https://github.com/sipherxyz/comfyui-art-venture"
 	"https://github.com/twri/sdxl_prompt_styler"
 	"https://github.com/hylarucoder/comfyui-copilot"
-	"https://github.com/kijai/ComfyUI-KJNodes"
 	"https://github.com/KoreTeknology/ComfyUI-Universal-Styler"
-    "https://github.com/city96/ComfyUI_ExtraModels"
     "https://github.com/chflame163/ComfyUI_LayerStyle"
-    #"https://github.com/kijai/ComfyUI-HunyuanVideoWrapper"
-    "https://github.com/ShmuelRonen/ComfyUI-EmptyHunyuanLatent"
+
+    "https://github.com/city96/ComfyUI-GGUF"
+    "https://github.com/city96/ComfyUI_ExtraModels"
+ 
+	"https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
+
+	"https://github.com/ShmuelRonen/ComfyUI-EmptyHunyuanLatent"
     "https://github.com/kijai/ComfyUI-WanVideoWrapper"
+    
+    "https://github.com/lldacing/ComfyUI_PuLID_Flux_ll.git"
+	"https://github.com/Gourieff/comfyui-reactor-node"
+
 )
 
 WORKFLOWS=(
