@@ -1,11 +1,12 @@
 # For build automation - Allows building from any ai-dock base image
-# Use a *cuda*base* image as default because pytorch brings the libs
-ARG IMAGE_BASE="ghcr.io/ai-dock/python:3.10-v2-cuda-12.1.1-base-22.04"
+# MODERNIZED: Default to your new Python 3.12 / CUDA 12.8.1 image
+ARG IMAGE_BASE="ghcr.io/phonehomephone/python:v2-cuda-12.8.1-py3.12-22.04"
 FROM ${IMAGE_BASE}
 
-LABEL org.opencontainers.image.source https://github.com/ai-dock/comfyui
-LABEL org.opencontainers.image.description "ComfyUI Stable Diffusion backend and GUI"
-LABEL maintainer="Rob Ballantyne <rob@dynamedia.uk>"
+# MODERNIZED: Link to your repo
+LABEL org.opencontainers.image.source https://github.com/phonehomephone/comfyui
+LABEL org.opencontainers.image.description "ComfyUI (Modernized: Py3.12 / CUDA 12.8.1 / PyTorch 2.5.1)"
+LABEL maintainer="PhoneHomePhone"
 
 ENV COMFYUI_VENV=$VENV_DIR/comfyui
 ENV COMFYUI_VENV_PYTHON=$COMFYUI_VENV/bin/python
@@ -19,10 +20,14 @@ ENV IMAGE_SLUG="comfyui"
 ENV OPT_SYNC=ComfyUI
 
 # Prepare environment
-ARG PYTHON_VERSION="3.10"
+# MODERNIZED: Set defaults to Python 3.12
+ARG PYTHON_VERSION="3.12"
 ENV PYTHON_VERSION=${PYTHON_VERSION}
-ARG PYTORCH_VERSION="2.4.0"
+
+# MODERNIZED: Upgrade PyTorch to 2.5.1
+ARG PYTORCH_VERSION="2.5.1"
 ENV PYTORCH_VERSION="${PYTORCH_VERSION}"
+
 COPY --chown=0:1111 ./COPY_ROOT_0/ /
 ARG IMAGE_BASE
 RUN set -eo pipefail && /opt/ai-dock/bin/build/layer0/init.sh | tee /var/log/build.log
