@@ -1,6 +1,6 @@
 # For build automation - Allows building from any ai-dock base image
 # MODERNIZED: Default to your new Python 3.12 / CUDA 12.8.1 image
-ARG IMAGE_BASE="ghcr.io/phonehomephone/python:v2-cuda-12.8.1-py3.12-22.04"
+ARG IMAGE_BASE="ghcr.io/phonehomephone/python:3.12-v2-cuda-12.8.1-devel-22.04"
 FROM ${IMAGE_BASE}
 
 # MODERNIZED: Link to your repo
