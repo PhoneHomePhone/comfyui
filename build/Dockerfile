@@ -27,6 +27,12 @@ ENV PYTORCH_VERSION="${PYTORCH_VERSION}"
 ARG TORCHVISION_VERSION="0.20.1"
 ARG TORCHAUDIO_VERSION="2.5.1"
 
+# CRITICAL FIX: FORCE PIP TO USE CUDA 12.4 WHEELS
+# The init.sh script defaults to 'cu128' (which is empty/nightly only). 
+# We override this to point to the stable 'cu124' repository.
+ENV PIP_EXTRA_INDEX_URL="https://download.pytorch.org/whl/cu124"
+ENV TORCH_INDEX_URL="https://download.pytorch.org/whl/cu124"
+
 # Copy scripts first
 COPY --chown=0:1111 ./COPY_ROOT_0/ /
 ARG IMAGE_BASE
@@ -34,7 +40,6 @@ ARG IMAGE_BASE
 # ------------------------------------------------------------------------------
 # STEP 1: COMPILERS
 # ------------------------------------------------------------------------------
-# SageAttention and custom nodes need GCC-12 to compile on modern CUDA
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc-12 g++-12 git ninja-build \
     && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
@@ -42,10 +47,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # ------------------------------------------------------------------------------
-# STEP 2: PRE-INSTALL PYTORCH & XFORMERS (The Speed Fix)
+# STEP 2: PRE-INSTALL PYTORCH & XFORMERS
 # ------------------------------------------------------------------------------
-# instead of compiling xformers for 45 mins, we use the cu124 binary wheel.
-# It works perfectly on CUDA 12.8 drivers.
+# We install these manually to ensure they exist before init.sh runs.
 RUN pip install --no-cache-dir \
     torch==${PYTORCH_VERSION} \
     torchvision==${TORCHVISION_VERSION} \
@@ -56,14 +60,13 @@ RUN pip install --no-cache-dir \
 # ------------------------------------------------------------------------------
 # STEP 3: INSTALL COMFYUI
 # ------------------------------------------------------------------------------
-# The init script will see PyTorch is present and skip the download.
+# Now when init.sh runs, it will use our PIP_EXTRA_INDEX_URL 
+# and find the packages in the correct repo.
 RUN set -eo pipefail && /opt/ai-dock/bin/build/layer0/init.sh | tee /var/log/build.log
 
 # ------------------------------------------------------------------------------
 # STEP 4: SAGE ATTENTION (Compiled from Source)
 # ------------------------------------------------------------------------------
-# We install SageAttention. Since we set up GCC-12 above, pip will automatically 
-# compile the CUDA kernels during installation.
 RUN echo "Compiling SageAttention..." && \
     pip install --no-cache-dir sageattention
 
