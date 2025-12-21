@@ -100,8 +100,8 @@ jobs:
           provenance: false
           tags: ${{ env.TAGS }}
           build-args: |
-            # Points to YOUR Python Image (Note the 'py' prefix matching the Python repo tag)
-            IMAGE_BASE=ghcr.io/${{ env.REPO_NAMESPACE }}/python:v2-cuda-${{ matrix.build.cuda }}-py${{ matrix.build.python }}-${{ env.UBUNTU_VERSION }}
+            # CORRECTED PATTERN: 3.12-v2-cuda-12.8.1-devel-22.04
+            IMAGE_BASE=ghcr.io/${{ env.REPO_NAMESPACE }}/python:${{ matrix.build.python }}-v2-cuda-${{ matrix.build.cuda }}-devel-${{ env.UBUNTU_VERSION }}
             PYTHON_VERSION=${{ matrix.build.python }}
             PYTORCH_VERSION=${{ matrix.build.pytorch }}
             COMFYUI_BUILD_REF=${{ env.COMFYUI_BUILD_REF }}
