@@ -1,38 +1,37 @@
-[![Docker Build](https://github.com/ai-dock/comfyui/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ai-dock/comfyui/actions/workflows/docker-build.yml)
+[![Docker Build](https://github.com/phonehomephone/comfyui/actions/workflows/docker-build.yml/badge.svg)](https://github.com/phonehomephone/comfyui/actions/workflows/docker-build.yml)
 
-# AI-Dock + ComfyUI Docker Image
+# AI-Dock + ComfyUI (Modernized)
 
 Run [ComfyUI](https://github.com/comfyanonymous/ComfyUI) in a highly-configurable, cloud-first AI-Dock container.
 
->[!NOTE]
->These images do not bundle models or third-party configurations. You should use a [provisioning script](https://github.com/ai-dock/base-image/wiki/4.0-Running-the-Image#provisioning-script) to automatically configure your container. You can find examples, including `SD3` & `FLUX.1` setup, in `config/provisioning`.
+> **Modernization Status:**
+> * **CUDA:** 12.8.1 (Devel)
+> * **PyTorch:** 2.5.1 (Latest Stable)
+> * **Python:** 3.12
+> * **OS:** Ubuntu 22.04
 
+>[!NOTE]
+>These images do not bundle models or third-party configurations. You should use a [provisioning script](https://github.com/ai-dock/base-image/wiki/4.0-Running-the-Image#provisioning-script) to automatically configure your container. You can find examples in `config/provisioning`.
 
 ## Documentation
 
-All AI-Dock containers share a common base which is designed to make running on cloud services such as [vast.ai](https://link.ai-dock.org/vast.ai) as straightforward and user friendly as possible.
+All AI-Dock containers share a common base which is designed to make running on cloud services such as [vast.ai](https://vast.ai) and [runpod.io](https://runpod.io) as straightforward and user friendly as possible.
 
-Common features and options are documented in the [base wiki](https://github.com/ai-dock/base-image/wiki) but any additional features unique to this image will be detailed below.
+Common features and options are documented in the [base wiki](https://github.com/ai-dock/base-image/wiki).
 
-#### Version Tags
+## Version Tags
 
-The `:latest` tag points to `:latest-cuda` and will relate to a stable and tested version.  There may be more recent builds
+The `:latest` tag points to `:latest-cuda` and provides the most recent stable build of the modern stack.
 
-Tags follow these patterns:
+**Tag Pattern:**
+`v2-cuda-[cuda_ver]-pytorch-[torch_ver]-py[python_ver]-[os_ver]`
 
-##### _CUDA_
-- `:cuda-[x.x.x-base|runtime]-[ubuntu-version]`
+**Example Tag:**
+`:v2-cuda-12.8.1-pytorch-2.5.1-py3.12-22.04`
 
-##### _ROCm_
-- `:rocm-[x.x.x-runtime]-[ubuntu-version]`
+Browse [GitHub Packages](https://github.com/phonehomephone/comfyui/pkgs/container/comfyui) or [Docker Hub](https://hub.docker.com/u/gitgud5000) for available images.
 
-##### _CPU_
-- `:cpu-[ubuntu-version]`
-
-
-Browse [ghcr.io](https://github.com/ai-dock/comfyui/pkgs/container/comfyui) for an image suitable for your target environment. Alternatively, view a select range of [CUDA](https://hub.docker.com/r/aidockorg/comfyui-cuda) and [ROCm](https://hub.docker.com/r/aidockorg/comfyui-rocm) builds at DockerHub.
-
-Supported Platforms: `NVIDIA CUDA`, `AMD ROCm`, `CPU`
+**Supported Platforms:** `NVIDIA CUDA` (Modern GPUs recommended)
 
 ## Additional Environment Variables
 
@@ -52,13 +51,10 @@ See the base environment variables [here](https://github.com/ai-dock/base-image/
 
 | Environment    | Packages |
 | -------------- | ----------------------------------------- |
-| `comfyui`      | ComfyUI and dependencies |
+| `comfyui`      | ComfyUI and dependencies (Python 3.12 venv) |
 | `api`          | ComfyUI API wrapper and dependencies |
 
-
 The `comfyui` environment will be activated on shell login.
-
-~~See the base micromamba environments [here](https://github.com/ai-dock/base-image/wiki/1.0-Included-Software#installed-micromamba-environments).~~
 
 ## Additional Services
 
@@ -66,32 +62,4 @@ The following services will be launched alongside the [default services](https:/
 
 ### ComfyUI
 
-The service will launch on port `8188` unless you have specified an override with `COMFYUI_PORT_HOST`.
-
-You can set startup flags by using variable `COMFYUI_ARGS`.
-
-To manage this service you can use `supervisorctl [start|stop|restart] comfyui`.
-
-
-### ComfyUI API Wrapper
-
-This service is available on port `8188` and is a work-in-progress to replace previous serverless handlers which have been depreciated; Old Docker images and sources remain available should you need them.
-
-You can access the api directly at `/ai-dock/api/` or you can use the Swager/openAPI playground at `/ai-dock/api/docs`.
-
->[!NOTE]
->All services are password protected by default. See the [security](https://github.com/ai-dock/base-image/wiki#security) and [environment variables](https://github.com/ai-dock/base-image/wiki/2.0-Environment-Variables) documentation for more information.
-
-## Pre-Configured Templates
-
-**Vast.​ai**
-
-- [comfyui:latest-cuda](https://link.ai-dock.org/template-vast-comfyui)
-
-- [comfyui:latest-cuda + FLUX.1](https://link.ai-dock.org/template-vast-comfyui-flux)
-
-- [comfyui:latest-rocm](https://link.ai-dock.org/template-vast-comfyui-rocm)
-
----
-
-_The author ([@robballantyne](https://github.com/robballantyne)) may be compensated if you sign up to services linked in this document. Testing multiple variants of GPU images in many different environments is both costly and time-consuming; This helps to offset costs_
+The service will launch on port `8188` unless you have
