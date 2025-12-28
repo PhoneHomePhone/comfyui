@@ -49,8 +49,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ------------------------------------------------------------------------------
 # STEP 2: PRE-INSTALL PYTORCH & XFORMERS
 # ------------------------------------------------------------------------------
-# We install these manually to ensure they exist before init.sh runs.
+# 1. Force NumPy < 2 (Critical Fix for SageAttention/ComfyUI)
+# 2. Install PyTorch/Xformers from cu124 index (Binary compatible with cu128)
 RUN pip install --no-cache-dir \
+    "numpy<2" \
     torch==${PYTORCH_VERSION} \
     torchvision==${TORCHVISION_VERSION} \
     torchaudio==${TORCHAUDIO_VERSION} \
@@ -60,13 +62,13 @@ RUN pip install --no-cache-dir \
 # ------------------------------------------------------------------------------
 # STEP 3: INSTALL COMFYUI
 # ------------------------------------------------------------------------------
-# Now when init.sh runs, it will use our PIP_EXTRA_INDEX_URL 
-# and find the packages in the correct repo.
 RUN set -eo pipefail && /opt/ai-dock/bin/build/layer0/init.sh | tee /var/log/build.log
 
 # ------------------------------------------------------------------------------
 # STEP 4: SAGE ATTENTION (Compiled from Source)
 # ------------------------------------------------------------------------------
+# Target: A100 (8.0), A40/3090 (8.6), Ada/4090 (8.9), H100 (9.0)
+ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0"
 RUN echo "Compiling SageAttention..." && \
     pip install --no-cache-dir sageattention
 
