@@ -15,29 +15,43 @@ APT_PACKAGES=(
 )
 
 PIP_PACKAGES=(
-    #"package-1"
-    #"package-2"
+    "deepdiff" # Required by ComfyUI-Crystools
+    "opencv-python-headless<4.10" # Force OpenCV 4.9.x to match our NumPy 1.x pin (Fixes SeedVR2 crash)
 )
 
 NODES=(
+#Qwen-Image-Edit
+    "https://github.com/luguoli/ComfyUI-Qwen-Image-Integrated-KSampler.git"
+#Upscale
     "https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git"
     #"https://github.com/ltdrdata/ComfyUI-Manager"
     #"https://github.com/cubiq/ComfyUI_essentials"
-    # "https://github.com/ltdrdata/ComfyUI-Impact-Pack"
+    #"https://github.com/ltdrdata/ComfyUI-Impact-Pack"
 )
 
 CHECKPOINT_MODELS=(
+# -----------------------------------------------------------------------------------
+# These files contain EVERYTHING needed to generate an image (Model + CLIP + VAE).
+# Use for: SD 1.5, SDXL, Pony, and most standard models.
+# Load in ComfyUI with: "Load Checkpoint" node.
+# -----------------------------------------------------------------------------------
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
+    #"https://huggingface.co/Phr00t/Qwen-Image-Edit-Rapid-AIO/resolve/main/v18/Qwen-Rapid-AIO-SFW-v18.safetensors"
 )
 
-UNET_MODELS=(
-
+UNET_MODELS=( 
+# -----------------------------------------------------------------------------------
+# These files contain ONLY the denoising model. They have no eyes (VAE) or ears (CLIP).
+# You MUST load separate CLIP and VAE models to use these.
+# Use for: Flux.1, SD 3.5, and GGUF models.
+# Load in ComfyUI with: "Load Diffusion Model" (or UNet Loader) node.
+# -----------------------------------------------------------------------------------    
 )
 
-LORA_MODELS=(
+LORAS_MODELS=(
     #"https://civitai.com/api/download/models/16576"
 )
 
@@ -47,10 +61,10 @@ VAE_MODELS=(
     #"https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors"
 )
 
-ESRGAN_MODELS=(
+UPSCALE_MODELS=(
     "https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
     "https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth"
-    "https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth"
+    "https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth" 
 
     #"https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth"
 )
@@ -64,7 +78,13 @@ CONTROLNET_MODELS=(
     #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors"
     #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_canny-fp16.safetensors"
     #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_openpose-fp16.safetensors"
-)
+
+    #"https://huggingface.co/alibaba-pai/Z-Image-Turbo-Fun-Controlnet-Union-2.1/resolve/main/Z-Image-Turbo-Fun-Controlnet-Union-2.0.safetensors"
+    #"https://huggingface.co/alibaba-pai/Z-Image-Turbo-Fun-Controlnet-Union-2.1/resolve/main/Z-Image-Turbo-Fun-Controlnet-Tile-2.1-8steps.safetensors"
+    #"https://huggingface.co/alibaba-pai/Z-Image-Turbo-Fun-Controlnet-Union-2.1/resolve/main/Z-Image-Turbo-Fun-Controlnet-Union-2.1-8steps.safetensors"
+    #"https://huggingface.co/alibaba-pai/Z-Image-Turbo-Fun-Controlnet-Union-2.1/resolve/main/Z-Image-Turbo-Fun-Controlnet-Union-2.1.safetensors" 
+)   
+
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -73,46 +93,70 @@ function provisioning_start() {
     source /opt/ai-dock/etc/environment.sh
 
     # -------------------------------------------------------------------------
-    # PERSISTENCE FIX: Map 'user' folder to Workspace
+    # PERSISTENCE: User Data, Outputs, and Inputs
     # -------------------------------------------------------------------------
-    # This saves your "Saved Workflows", settings, and history to disk.
+    # 1. User Settings & Workflows (KEEP THIS ENABLED)
     if [[ ! -d /workspace/storage/comfyui_user ]]; then
-        echo "Creating persistent user folder..."
         mkdir -p /workspace/storage/comfyui_user
-        # Copy default settings if they exist so we start fresh but persistent
         cp -r /opt/ComfyUI/user/* /workspace/storage/comfyui_user/ 2>/dev/null
     fi
-
-    # Remove the ephemeral folder and link to the persistent one
-    rm -rf /opt/ComfyUI/user
-    ln -s /workspace/storage/comfyui_user /opt/ComfyUI/user
+    rm -rf /opt/ComfyUI/user && ln -s /workspace/storage/comfyui_user /opt/ComfyUI/user
     echo "Linked ComfyUI user data to /workspace/storage/comfyui_user"
-    # -------------------------------------------------------------------------
+
+    # 2. Outputs (Generated Images) - DISABLED TO SAVE DISK SPACE
+    # if [[ ! -d /workspace/storage/comfyui_output ]]; then
+    #     mkdir -p /workspace/storage/comfyui_output
+    # fi
+    # rm -rf /opt/ComfyUI/output && ln -s /workspace/storage/comfyui_output /opt/ComfyUI/output
+
+    # 3. Inputs (Uploaded Images) - DISABLED TO SAVE DISK SPACE
+    # if [[ ! -d /workspace/storage/comfyui_input ]]; then
+    #     mkdir -p /workspace/storage/comfyui_input
+    # fi
+    # rm -rf /opt/ComfyUI/input && ln -s /workspace/storage/comfyui_input /opt/ComfyUI/input
     
+    # -------------------------------------------------------------------------
+    # PERSISTENCE: MODEL SYMLINKING
+    # -------------------------------------------------------------------------
+    declare -A mappings=(
+        ["checkpoints"]="/workspace/storage/stable_diffusion/models/checkpoints"
+        ["unet"]="/workspace/storage/stable_diffusion/models/unet"
+        ["loras"]="/workspace/storage/stable_diffusion/models/loras"
+        ["controlnet"]="/workspace/storage/stable_diffusion/models/controlnet"
+        ["vae"]="/workspace/storage/stable_diffusion/models/vae"
+        ["upscale_models"]="/workspace/storage/stable_diffusion/models/upscale_models"
+    )
+
+    for type in "${!mappings[@]}"; do
+        src="${mappings[$type]}"
+        dest="/opt/ComfyUI/models/$type"
+        
+        if [[ ! -d "$src" ]]; then mkdir -p "$src"; fi
+        
+        if [[ -d "$dest" && ! -L "$dest" ]]; then rmdir "$dest" 2>/dev/null || rm -rf "$dest"; fi
+        if [[ ! -L "$dest" ]]; then ln -s "$src" "$dest"; fi
+        
+        printf "Linked %s \t-> %s\n" "$type" "$src"
+    done
+    # -------------------------------------------------------------------------
+
+    # CLEANUP: Remove Jupyter hidden files
+    find ${WORKSPACE}/ComfyUI/custom_nodes -name ".ipynb_checkpoints" -type d -exec rm -rf {} + 2>/dev/null
+    find /opt/ComfyUI/custom_nodes -name ".ipynb_checkpoints" -type d -exec rm -rf {} + 2>/dev/null
+
     provisioning_print_header
     provisioning_get_apt_packages
     provisioning_get_nodes
     provisioning_get_pip_packages
     
-    # FIX: Updated folder names to match ComfyUI standards
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/checkpoints" \
-        "${CHECKPOINT_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/unet" \
-        "${UNET_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/loras" \
-        "${LORA_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/controlnet" \
-        "${CONTROLNET_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/vae" \
-        "${VAE_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/upscale_models" \
-        "${ESRGAN_MODELS[@]}"
+    # Downloads
+    provisioning_get_models "${mappings[checkpoints]}" "${CHECKPOINT_MODELS[@]}"
+    provisioning_get_models "${mappings[unet]}" "${UNET_MODELS[@]}"
+    provisioning_get_models "${mappings[loras]}" "${LORAS_MODELS[@]}"
+    provisioning_get_models "${mappings[controlnet]}" "${CONTROLNET_MODELS[@]}"
+    provisioning_get_models "${mappings[vae]}" "${VAE_MODELS[@]}"
+    provisioning_get_models "${mappings[upscale_models]}" "${UPSCALE_MODELS[@]}"
+    
     provisioning_print_end
 }
 
