@@ -15,15 +15,20 @@ APT_PACKAGES=(
 )
 
 PIP_PACKAGES=(
-    "deepdiff" # Required by ComfyUI-Crystools
-    "opencv-python-headless<4.10" # Force OpenCV 4.9.x to match our NumPy 1.x pin (Fixes SeedVR2 crash)
+    "deepdiff"                      # For Crystools node
+    "numpy<2"                       # The Anchor
+    "colour-science==0.4.4"         # Last version compatible with NumPy 1.x
+    "opencv-python-headless<4.10"   # OpenCV 4.9.x (NumPy 1.x compatible)
+    "opencv-contrib-python-headless<4.10" # Contrib modules (NumPy 1.x compatible)
+    "nvidia-ml-py"
+    "pixeloe"                       # Install this last
 )
 
 NODES=(
 #Qwen-Image-Edit
     "https://github.com/luguoli/ComfyUI-Qwen-Image-Integrated-KSampler.git"
 #Upscale
-    "https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git"
+    #"https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git"
     #"https://github.com/ltdrdata/ComfyUI-Manager"
     #"https://github.com/cubiq/ComfyUI_essentials"
     #"https://github.com/ltdrdata/ComfyUI-Impact-Pack"
@@ -91,6 +96,13 @@ CONTROLNET_MODELS=(
 function provisioning_start() {
     # Modern Environment Setup
     source /opt/ai-dock/etc/environment.sh
+
+    # -------------------------------------------------------------------------
+    # OPTIONAL: Upgrade PIP to latest version (Silences log warnings)
+    # -------------------------------------------------------------------------
+    if [[ -n "$COMFYUI_VENV_PIP" ]]; then
+        "$COMFYUI_VENV_PIP" install --upgrade pip
+    fi
 
     # -------------------------------------------------------------------------
     # PERSISTENCE: User Data, Outputs, and Inputs
